@@ -29,6 +29,7 @@ class MainService { //여기서는 서비스 컨트롤
 
         final MainRetrofitInterface mainRetrofitInterface = getRetrofit().create(MainRetrofitInterface.class);
         Log.e("성공",""+"돌긴 도니 ");
+        Log.e("성공",""+"돌긴 도니 ");
 //        RequestBody requestBody= RequestBody.create(MediaType.parse("application/json; charset=utf-8"),mainJsonString);
 //        Log.e("성공",""+ Base64.decode(requestBody.toString(),1));
         mainRetrofitInterface.postFacebook("facebook", new SignInJwtToken(jwt)).enqueue(new Callback<DefaultResponse>() {
