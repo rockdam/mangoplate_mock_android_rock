@@ -10,11 +10,10 @@ import com.softSquared.mangoplate.src.home.interfaces.HomeActivityView;
 
 import com.softSquared.mangoplate.src.home.search_restaurant.interfaces.SearchRetrofitInterface;
 import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantResult;
-import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantResultList;
+import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantResultResponse;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -29,10 +28,10 @@ public class SearchRestaurantService {
     private HomeActivityView mHomeActivityView;
 
     private HomeAcitivity mHomeAcitivity;
-    private RestaurantResultList mRestaurantResultList;
+    private RestaurantResultResponse mRestaurantResultResponse;
     private RecyclerView searchRestaurantRecyclerView;
-    private RestaurantRecyclerAdapter restaurantRecyclerAdapter;
     private GridLayoutManager mGridLayoutManager;
+    private SearchRestaurantFragment mSearchRestaurantFragment;
     private RestaurantRecyclerAdapter madapter;
     private Context mContext;
     private String area =""; // 쿼리 ?area= .......;
@@ -71,25 +70,25 @@ public class SearchRestaurantService {
         searchRetrofitInterface.toString();
 
         init();
-        searchRetrofitInterface.getRestaurants(X_ACCESS_TOKEN,  ApplicationClass.lat,   ApplicationClass.lng, "main", "금천구").enqueue(new Callback<RestaurantResultList>() {
+        searchRetrofitInterface.getRestaurants(X_ACCESS_TOKEN,  ApplicationClass.lat,   ApplicationClass.lng, "main", "금천구").enqueue(new Callback<RestaurantResultResponse>() {
             @Override
-            public void onResponse(Call<RestaurantResultList> call, Response<RestaurantResultList> response) {
-                mRestaurantResultList = response.body();
+            public void onResponse(Call<RestaurantResultResponse> call, Response<RestaurantResultResponse> response) {
+                mRestaurantResultResponse = response.body();
 
-                if (mRestaurantResultList.getResult() != null && mRestaurantResultList.getResult().size() > 0) {
-                    for ( RestaurantResult result : mRestaurantResultList.getResult()) {
+                if (mRestaurantResultResponse.getResult() != null && mRestaurantResultResponse.getResult().size() > 0) {
                         if (response.code() == 200) {
 
+                            mSearchRestaurantFragment.successUpdateRecyclerView(mRestaurantResultResponse);
                             Log.e("왜 안나와?", "ㅇ?" );
-                            if (mRestaurantResultList.getResult() != null) {
+                            if (mRestaurantResultResponse.getResult() != null) {
 
 
-                                Log.e("망고 식당이름", "" + result.getTitle());
-                                Log.e("망고 지역", "" + result.getArea());
-                                Log.e("망고 이미지url", "" + result.getImg());
-                                Log.e("망고 rating", "" + result.getRating());
-                                Log.e("망고 본 사람수", "" + result.getSeenNum());
-                                madapter.addItem(result);
+//                                Log.e("망고 식당이름", "" + result.getTitle());
+//                                Log.e("망고 지역", "" + result.getArea());
+//                                Log.e("망고 이미지url", "" + result.getImg());
+//                                Log.e("망고 rating", "" + result.getRating());
+//                                Log.e("망고 본 사람수", "" + result.getSeenNum());
+//                                madapter.addItem(result);
 
 
                             }
@@ -97,7 +96,7 @@ public class SearchRestaurantService {
                         } else {
                             mHomeActivityView.validateFailure(null);
                             Log.e("실패", "ㅇㅋ");
-                            if (mRestaurantResultList.getResult() != null) {
+                            if (mRestaurantResultResponse.getResult() != null) {
 
                                 Log.e("실패", "ㅎㅎㅎ");
 
@@ -107,18 +106,20 @@ public class SearchRestaurantService {
 
                     }
 
-                    madapter.notifyDataSetChanged();
+//                    madapter.notifyDataSetChanged();
                 }
+
+            @Override
+            public void onFailure(Call<RestaurantResultResponse> call, Throwable t) {
+
+            }
 
 //            }
 
 
-            }
 
-            @Override
-            public void onFailure(Call<RestaurantResultList> call, Throwable t) {
 
-            }
+
         });
 
     }
@@ -133,30 +134,28 @@ public class SearchRestaurantService {
         searchRetrofitInterface.toString();
 
         init();
-        searchRetrofitInterface.getStartRestaurants(X_ACCESS_TOKEN, (float) ApplicationClass.lat, (float) ApplicationClass.lng, "main").enqueue(new Callback<RestaurantResultList>() {
+        searchRetrofitInterface.getStartRestaurants(X_ACCESS_TOKEN, (float) ApplicationClass.lat, (float) ApplicationClass.lng, "main").enqueue(new Callback<RestaurantResultResponse>() {
             @Override
-            public void onResponse(Call<RestaurantResultList> call, Response<RestaurantResultList> response) {
-                mRestaurantResultList = response.body();
+            public void onResponse(Call<RestaurantResultResponse> call, Response<RestaurantResultResponse> response) {
+                mRestaurantResultResponse = response.body();
 
-                if (mRestaurantResultList.getResult() != null && mRestaurantResultList.getResult().size() > 0) {
-                    for (RestaurantResult result : mRestaurantResultList.getResult()) {
+                if (mRestaurantResultResponse.getResult() != null && mRestaurantResultResponse.getResult().size() > 0) {
                         if (response.code() == 200) {
+                            mSearchRestaurantFragment.successUpdateRecyclerView(mRestaurantResultResponse);
+                            if (mRestaurantResultResponse.getResult() != null) {
 
-                            if (mRestaurantResultList.getResult() != null) {
-
-                                Log.e("망고 식당이름", "" + result.getTitle());
-                                Log.e("망고 지역", "" + result.getArea());
-                                Log.e("망고 이미지url", "" + result.getImg());
-                                Log.e("망고 rating", "" + result.getRating());
-                                Log.e("망고 본 사람수", "" + result.getSeenNum());
-                                madapter.addItem(result);
-
+//                                Log.e("망고 식당이름", "" + result.getTitle());
+//                                Log.e("망고 지역", "" + result.getArea());
+//                                Log.e("망고 이미지url", "" + result.getImg());
+//                                Log.e("망고 rating", "" + result.getRating());
+//                                Log.e("망고 본 사람수", "" + result.getSeenNum());
+//
 
                             }
 
                         } else {
                             mHomeActivityView.validateFailure(null);
-                            if (mRestaurantResultList.getResult() != null) {
+                            if (mRestaurantResultResponse.getResult() != null) {
 
                                 Log.e("실패", "ㅎㅎㅎ");
 
@@ -169,16 +168,18 @@ public class SearchRestaurantService {
                     madapter.notifyDataSetChanged();
                 }
 
+            @Override
+            public void onFailure(Call<RestaurantResultResponse> call, Throwable t) {
+
+            }
+            }
+
 //            }
 
 
-            }
 
-            @Override
-            public void onFailure(Call<RestaurantResultList> call, Throwable t) {
 
-            }
-        });
+
 
     }
 
