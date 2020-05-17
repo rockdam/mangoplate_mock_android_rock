@@ -28,6 +28,8 @@ import com.softSquared.mangoplate.src.home.search_restaurant.localSearchTab_layo
 import com.softSquared.mangoplate.src.home.search_restaurant.localSearchTab_layout.mylocation_search.MyLocationSearch;
 import com.google.android.material.tabs.TabLayout;
 import com.softSquared.mangoplate.src.home.naverMapActivity.naverMapAcitivty;
+import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantResult;
+import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantResultResponse;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -338,6 +340,19 @@ public class SearchRestaurantFragment extends Fragment implements SearchRestaura
     @Override
     public void validateFailure(String message) {
 
+    }
+
+    @Override
+    public void successUpdateRecyclerView(RestaurantResultResponse restaurantInfoResultList) {
+        madapter.clear(); // 클리어 함수를 만들어서 쓴다.
+        for (RestaurantResult result : restaurantInfoResultList.getResult()) {
+
+            madapter.addItem(result);
+
+        }
+
+        madapter.notifyDataSetChanged();
+        //여기다가 추가 뷰 컨트롤 서비스에서 하지말고 .
     }
 }
 

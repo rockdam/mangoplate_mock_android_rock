@@ -69,7 +69,6 @@ public class SearchRestaurantService {
         Log.e("망고 area", area);
         searchRetrofitInterface.toString();
 
-        init();
         searchRetrofitInterface.getRestaurants(X_ACCESS_TOKEN,  ApplicationClass.lat,   ApplicationClass.lng, "main", "금천구").enqueue(new Callback<RestaurantResultResponse>() {
             @Override
             public void onResponse(Call<RestaurantResultResponse> call, Response<RestaurantResultResponse> response) {
@@ -133,16 +132,15 @@ public class SearchRestaurantService {
         Log.e("망고 area", area);
         searchRetrofitInterface.toString();
 
-        init();
         searchRetrofitInterface.getStartRestaurants(X_ACCESS_TOKEN, (float) ApplicationClass.lat, (float) ApplicationClass.lng, "main").enqueue(new Callback<RestaurantResultResponse>() {
             @Override
             public void onResponse(Call<RestaurantResultResponse> call, Response<RestaurantResultResponse> response) {
                 mRestaurantResultResponse = response.body();
 
                 if (mRestaurantResultResponse.getResult() != null && mRestaurantResultResponse.getResult().size() > 0) {
-                        if (response.code() == 200) {
-                            mSearchRestaurantFragment.successUpdateRecyclerView(mRestaurantResultResponse);
-                            if (mRestaurantResultResponse.getResult() != null) {
+                    if (response.code() == 200) {
+                        mSearchRestaurantFragment.successUpdateRecyclerView(mRestaurantResultResponse);
+                        if (mRestaurantResultResponse.getResult() != null) {
 
 //                                Log.e("망고 식당이름", "" + result.getTitle());
 //                                Log.e("망고 지역", "" + result.getArea());
@@ -151,45 +149,33 @@ public class SearchRestaurantService {
 //                                Log.e("망고 본 사람수", "" + result.getSeenNum());
 //
 
-                            }
-
-                        } else {
-                            mHomeActivityView.validateFailure(null);
-                            if (mRestaurantResultResponse.getResult() != null) {
-
-                                Log.e("실패", "ㅎㅎㅎ");
-
-                            }
                         }
 
+                    } else {
+                        mHomeActivityView.validateFailure(null);
+                        if (mRestaurantResultResponse.getResult() != null) {
 
+                            Log.e("실패", "ㅎㅎㅎ");
+
+                        }
                     }
 
-                    madapter.notifyDataSetChanged();
+
                 }
+
+                madapter.notifyDataSetChanged();
+            }
 
             @Override
             public void onFailure(Call<RestaurantResultResponse> call, Throwable t) {
 
             }
-            }
 
 //            }
 
 
-
-
-
-
+        });
     }
 
-    private void init() {
-        int numberOfColumns = 2;// 한줄에 2개의 컬럼을 추가
-        searchRestaurantRecyclerView = mHomeAcitivity.findViewById(R.id.fragment_recyclerView_searchRestaurant);
-        mGridLayoutManager = new GridLayoutManager(mContext, numberOfColumns);
-        searchRestaurantRecyclerView.setLayoutManager(mGridLayoutManager);
-        madapter = new RestaurantRecyclerAdapter(mHomeAcitivity);
-        searchRestaurantRecyclerView.setAdapter(madapter);
 
-    }
 }

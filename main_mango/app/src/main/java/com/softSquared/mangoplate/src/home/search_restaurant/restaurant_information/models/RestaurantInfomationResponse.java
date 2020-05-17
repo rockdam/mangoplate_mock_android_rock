@@ -6,9 +6,9 @@ import java.util.List;
 
 public class RestaurantInfomationResponse {
     @SerializedName("result")
-    private List<RestaurantInfoResult> result;
+    private List<RestaurantInfoResultList> result;
 
-    public List<RestaurantInfoResult> getResult() {
+    public List<RestaurantInfoResultList> getResult() {
         return result;
     }
 

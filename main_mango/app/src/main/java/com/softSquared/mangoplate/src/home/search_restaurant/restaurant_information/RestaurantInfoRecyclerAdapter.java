@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.softSquared.mangoplate.R;
-import com.softSquared.mangoplate.src.home.HomeAcitivity;
-import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.models.RestaurantInfoResult;
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.models.RestaurantInfoResultList;
 
 import java.util.ArrayList;
@@ -48,6 +46,12 @@ public class RestaurantInfoRecyclerAdapter extends RecyclerView.Adapter<Restaura
 
 
         holder.onBind(listData.get(position));
+    }
+    public void clear()
+    {
+        listData.clear();
+
+
     }
 
     @Override

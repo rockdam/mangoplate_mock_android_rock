@@ -10,6 +10,7 @@ import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantRe
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.RestaurantInfoRecyclerAdapter;
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.RetaurantInformationLayout;
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.interfaces.RestaurantInfoRetrofitInterface;
+import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.interfaces.RestaurantInfoViewFragment;
 
 import java.util.ArrayList;
 
@@ -26,8 +27,8 @@ import static com.softSquared.mangoplate.src.ApplicationClass.getRetrofit;
 public class RestaurantInfoService {
     private HomeActivityView mHomeActivityView;
 
-    private RetaurantInformationLayout mRetaurantInformationLayout;
-    private RestaurantInfoResult mRestaurantInfoResult;
+    private RestaurantInfoViewFragment mRestaurantInfoViewFragment;
+    private RestaurantInfomationResponse mRestaurantInfomationResponse;
     private RecyclerView mInfoRestaurantRecyclerView;
     private GridLayoutManager mGridLayoutManager;
     private RestaurantInfoRecyclerAdapter madapter;
@@ -36,8 +37,8 @@ public class RestaurantInfoService {
     private ArrayList<RestaurantResult> listData = new ArrayList<>();
     int mRestaurantId;
 
-    public RestaurantInfoService(final RetaurantInformationLayout mRetaurantInformationLayout,int restaurantId) {
-        this.mRetaurantInformationLayout = mRetaurantInformationLayout;
+    public RestaurantInfoService( RestaurantInfoViewFragment mRestaurantInfoViewFragment, int restaurantId) {
+        this.mRestaurantInfoViewFragment = mRestaurantInfoViewFragment;
         this.mRestaurantId =restaurantId;
     }
 
@@ -49,21 +50,24 @@ public class RestaurantInfoService {
 
         restaurantInfoRetrofitInterface.toString();
 
-        init();
-        restaurantInfoRetrofitInterface.getRestaurants(X_ACCESS_TOKEN, mRestaurantId).enqueue(new Callback<RestaurantInfoResult>() {
+//        init();
+        restaurantInfoRetrofitInterface.getRestaurants(X_ACCESS_TOKEN, mRestaurantId).enqueue(new Callback<RestaurantInfomationResponse>() {
             @Override
-            public void onResponse(Call<RestaurantInfoResult> call, Response<RestaurantInfoResult> response) {
-                mRestaurantInfoResult = response.body();
+            public void onResponse(Call<RestaurantInfomationResponse> call, Response<RestaurantInfomationResponse> response) {
+                mRestaurantInfomationResponse = response.body();
                 Log.e("망고 안되네", "area");
-                if (mRestaurantInfoResult.getResult() != null) {
+                if (mRestaurantInfomationResponse.getResult() != null) {
 
                         if (response.code() == 200) {
 
-                            if (mRestaurantInfoResult.getResult() != null) {
+                            if (mRestaurantInfomationResponse.getResult() != null) {
 
-                                Log.e("망고 식당이름!", "" + mRestaurantInfoResult.getResult().getName());
-                                Log.e("망고 식당이름!", "" + mRestaurantInfoResult.getResult().getAddress());
-                                madapter.addItem(mRestaurantInfoResult.getResult());
+//                                Log.e("망고 식당이름!", "" + mRestaurantInfomationResponse.getResult().get);
+//                                Log.e("망고 식당이름!", "" + mRestaurantInfomationResponse.getResult().getAddress());
+//                                madapter.addItem(mRestaurantInfomationResponse.getResult());
+//                                mRestaurantInfomationResponse.getResult().get
+                                mRestaurantInfoViewFragment.SuccessUpdateRecyclerView(mRestaurantInfomationResponse);
+
 
 
                             }
@@ -80,9 +84,11 @@ public class RestaurantInfoService {
                 }
 
             @Override
-            public void onFailure(Call<RestaurantInfoResult> call, Throwable t) {
+            public void onFailure(Call<RestaurantInfomationResponse> call, Throwable t) {
 
             }
+
+
 
 
         });
@@ -92,28 +98,6 @@ public class RestaurantInfoService {
     }
 
 
-    private void init() {
-        int numberOfColumns = 1;// 한줄에 2개의 컬럼을 추가
-        mInfoRestaurantRecyclerView = mRetaurantInformationLayout.findViewById(R.id.recyclerview_informaiton);
-        mGridLayoutManager = new GridLayoutManager(mContext, numberOfColumns);
-        mInfoRestaurantRecyclerView.setLayoutManager(mGridLayoutManager);
-        madapter = new RestaurantInfoRecyclerAdapter(mRetaurantInformationLayout);
-        mInfoRestaurantRecyclerView.setAdapter(madapter);RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
 
-                GridLayoutManager layoutManager = GridLayoutManager.class.cast(recyclerView.getLayoutManager());
-                int totalItemCount = layoutManager.getItemCount();
-                int lastVisible = layoutManager.findLastCompletelyVisibleItemPosition();
-
-                if (lastVisible >= totalItemCount - 1) {
-                    madapter.addItem(mRestaurantInfoResult.getResult());
-                }
-            }
-        };
-        mInfoRestaurantRecyclerView.addOnScrollListener(onScrollListener);
-
-    }
 }
 

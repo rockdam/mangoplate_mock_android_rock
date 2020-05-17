@@ -50,6 +50,11 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
         holder.onBind(listData.get(position));
     }
 
+    public void clear()
+    {
+
+        listData.clear();
+    }
     @Override
     public int getItemCount() {
         // RecyclerView의 총 개수 입니다.
