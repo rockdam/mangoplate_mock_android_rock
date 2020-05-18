@@ -3,18 +3,14 @@ package com.softSquared.mangoplate.src.home.search_restaurant.restaurant_informa
 import android.content.Context;
 import android.util.Log;
 
-import com.softSquared.mangoplate.R;
 import com.softSquared.mangoplate.src.home.interfaces.HomeActivityView;
-import com.softSquared.mangoplate.src.home.search_restaurant.RestaurantRecyclerAdapter;
 import com.softSquared.mangoplate.src.home.search_restaurant.models.RestaurantResult;
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.RestaurantInfoRecyclerAdapter;
-import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.RetaurantInformationLayout;
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.interfaces.RestaurantInfoRetrofitInterface;
 import com.softSquared.mangoplate.src.home.search_restaurant.restaurant_information.interfaces.RestaurantInfoViewFragment;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -62,11 +58,7 @@ public class RestaurantInfoService {
 
                             if (mRestaurantInfomationResponse.getResult() != null) {
 
-//                                Log.e("망고 식당이름!", "" + mRestaurantInfomationResponse.getResult().get);
-//                                Log.e("망고 식당이름!", "" + mRestaurantInfomationResponse.getResult().getAddress());
-//                                madapter.addItem(mRestaurantInfomationResponse.getResult());
-//                                mRestaurantInfomationResponse.getResult().get
-                                mRestaurantInfoViewFragment.SuccessUpdateRecyclerView(mRestaurantInfomationResponse);
+                                mRestaurantInfoViewFragment.successUpdateRecyclerView(mRestaurantInfomationResponse);
 
 
 

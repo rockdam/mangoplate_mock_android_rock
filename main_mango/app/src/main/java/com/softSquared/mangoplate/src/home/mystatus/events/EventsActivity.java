@@ -11,12 +11,21 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.softSquared.mangoplate.R;
+import com.softSquared.mangoplate.src.BaseActivity;
+import com.softSquared.mangoplate.src.home.mystatus.events.interfaces.EventsActivityView;
+import com.softSquared.mangoplate.src.home.mystatus.events.models.EventsResponse;
+import com.softSquared.mangoplate.src.home.mystatus.events.models.EventsResult;
 
-public class EventsActivity extends AppCompatActivity {
-    private GridLayoutManager mGridLayoutManager;
+import java.util.HashMap;
+
+public class EventsActivity extends BaseActivity implements EventsActivityView {
     private EventsRecyclerAdapter madapter;
-    RecyclerView mRecyclerViewEvents;
     ImageView backkey_events;
+    private EventsActivity mEventsActivity;
+    private HashMap<String, String> mEventresponse;
+    private EventsRecyclerAdapter mAdapter;
+    private GridLayoutManager mGridLayoutManager;
+    RecyclerView mRecyclerViewEvents;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +34,7 @@ public class EventsActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.BLACK);
         }
         evnets_tryGet(); // events 목록 API 통신 (GET)
-
+        init();// recyclerView 초기화
         backkey_events=findViewById(R.id.backkey_events);
         backkey_events.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,4 +65,25 @@ public class EventsActivity extends AppCompatActivity {
         super.onDestroy();
         finish();
     }
+
+    @Override
+    public void successUpdateRecyclerView(EventsResponse eventsResponse) {
+
+        mAdapter.clear();
+        for (EventsResult eventsResult : eventsResponse.getResult()) {
+            mAdapter.addItem(eventsResult);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void init() {
+        int numberOfColumns = 1;// 한줄에 2개의 컬럼을 추가
+        mRecyclerViewEvents = mEventsActivity.findViewById(R.id.recyclerview_events);
+        mGridLayoutManager = new GridLayoutManager(mEventsActivity, numberOfColumns);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        mRecyclerViewEvents.setLayoutManager(mGridLayoutManager);
+        mAdapter = new EventsRecyclerAdapter(mEventsActivity);
+        mRecyclerViewEvents.setAdapter(mAdapter);
+    }
 }
+

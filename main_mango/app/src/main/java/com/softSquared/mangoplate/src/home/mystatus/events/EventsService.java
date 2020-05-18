@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.softSquared.mangoplate.R;
 import com.softSquared.mangoplate.src.home.interfaces.HomeActivityView;
+import com.softSquared.mangoplate.src.home.mystatus.events.interfaces.EventsActivityView;
 import com.softSquared.mangoplate.src.home.mystatus.events.interfaces.EventsRetrofitInterface;
 import com.softSquared.mangoplate.src.home.mystatus.events.models.EventsResponse;
 import com.softSquared.mangoplate.src.home.mystatus.events.models.EventsResult;
@@ -20,15 +21,15 @@ import static com.softSquared.mangoplate.src.ApplicationClass.X_ACCESS_TOKEN;
 import static com.softSquared.mangoplate.src.ApplicationClass.getRetrofit;
 
 public class EventsService {
-    private HomeActivityView mHomeActivityView;
+    private EventsActivityView mEventsActivityView;
 
     private EventsActivity mEventsActivity;
     private HashMap<String, String> mEventresponse;
     private EventsRecyclerAdapter mAdapter;
     private GridLayoutManager mGridLayoutManager;
     RecyclerView mRecyclerViewEvents;
-    EventsService(final EventsActivity eventsActivity) {
-        this.mEventsActivity = eventsActivity;
+    EventsService(final EventsActivityView mEventsActivityView) {
+        this.mEventsActivityView = mEventsActivityView;
     }
 
 
@@ -39,7 +40,6 @@ public class EventsService {
         Log.e("성공", "" + "돌긴 도니 ");
         eventsRetrofitInterface.toString();
 
-        init();
         eventsRetrofitInterface.GetEvents("detail", X_ACCESS_TOKEN).enqueue(new Callback<EventsResponse>() {
             @Override
             public void onResponse(Call<EventsResponse> call, Response<EventsResponse> response) {
@@ -51,20 +51,12 @@ public class EventsService {
 
                         if (response.code() == 200) {
 
-                            if (eventsResponse.getResult() != null) {
-
-                                Log.e("이벤트 광고 URL", "" +eventsResult.getImageUrl());
-
-                                Log.e("이벤트 광고 TITLE", "" + eventsResult.getTitle());
-                                Log.e("이벤트 광고 STATUS", "" + eventsResult.getStatus());
-                                mAdapter.addItem(eventsResult);
-                            }
+                            mEventsActivityView.successUpdateRecyclerView(eventsResponse);
 
                         }
 
 
                     }
-                    mAdapter.notifyDataSetChanged();
 
 
                 }
@@ -79,13 +71,5 @@ public class EventsService {
 
         });
     }
-    private void init() {
-        int numberOfColumns = 1;// 한줄에 2개의 컬럼을 추가
-        mRecyclerViewEvents = mEventsActivity.findViewById(R.id.recyclerview_events);
-        mGridLayoutManager = new GridLayoutManager(mEventsActivity, numberOfColumns);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        mRecyclerViewEvents.setLayoutManager(mGridLayoutManager);
-        mAdapter = new EventsRecyclerAdapter(mEventsActivity);
-        mRecyclerViewEvents.setAdapter(mAdapter);
-    }
+
 }

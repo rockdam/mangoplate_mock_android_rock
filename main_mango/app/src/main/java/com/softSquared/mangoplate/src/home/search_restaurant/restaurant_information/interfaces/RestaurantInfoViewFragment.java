@@ -8,7 +8,7 @@ public interface RestaurantInfoViewFragment {
 
     void validateFailure(String message);
 
-    void SuccessUpdateRecyclerView(RestaurantInfomationResponse restaurantInfomationResponse);
+    void successUpdateRecyclerView(RestaurantInfomationResponse restaurantInfomationResponse);
 
 
 

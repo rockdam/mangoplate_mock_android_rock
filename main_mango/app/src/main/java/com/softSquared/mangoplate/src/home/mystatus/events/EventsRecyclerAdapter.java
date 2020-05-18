@@ -56,6 +56,11 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
         return listData.size();
     }
 
+    public void clear()
+    {
+        listData.clear();
+
+    }
     public void addItem(EventsResult data) {
         listData.add(data);
     }

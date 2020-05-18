@@ -58,7 +58,7 @@ public class RetaurantInformationLayout extends BaseActivity implements Restaura
     }
 
     @Override
-    public void SuccessUpdateRecyclerView(RestaurantInfomationResponse restaurantInfomationResponse) {
+    public void successUpdateRecyclerView(RestaurantInfomationResponse restaurantInfomationResponse) {
 
         madapter.clear();
         for(RestaurantInfoResultList restaurantInfoResultList : restaurantInfomationResponse.getResult())
