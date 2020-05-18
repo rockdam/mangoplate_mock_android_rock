@@ -51,6 +51,8 @@ public class FragmentDiscount extends Fragment {
 
 
         Log.e("dd","잔디가 안 심어지는 이유가 있었다..");
+
+        Log.e("dd","잔디가 안 심어지는 이유가 있었다..");
         return mRootView;
     }
 
